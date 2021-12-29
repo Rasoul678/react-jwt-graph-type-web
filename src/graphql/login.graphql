@@ -1,0 +1,9 @@
+mutation Login($input: EmailPasswordInput!) {
+  login(input: $input) {
+    error {
+      type
+      message
+    }
+    accessToken
+  }
+}

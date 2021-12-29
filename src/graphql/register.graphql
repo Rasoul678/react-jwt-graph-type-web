@@ -1,0 +1,9 @@
+mutation Register($input: EmailPasswordInput!) {
+  register(input: $input) {
+    error {
+      type
+      message
+    }
+    accessToken
+  }
+}
