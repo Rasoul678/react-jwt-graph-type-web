@@ -10,7 +10,8 @@ import {
   Heading,
   Input,
 } from "@chakra-ui/react";
-import { useLoginMutation } from "../generated/graphql";
+import { MeDocument, MeQuery, useLoginMutation } from "../generated/graphql";
+import { setAccessToken } from "../accessToken";
 
 const Login: React.FC = () => {
   const [login] = useLoginMutation();
@@ -30,7 +31,24 @@ const Login: React.FC = () => {
           password,
         },
       },
+      update: (store, { data }) => {
+        if (!data) {
+          return null;
+        }
+
+        store.writeQuery<MeQuery>({
+          query: MeDocument,
+          data: {
+            __typename: "Query",
+            me: data.login.user,
+          },
+        });
+      },
     });
+
+    if (response && response.data) {
+      setAccessToken(response.data.login.accessToken || "");
+    }
 
     if (response.data?.login.error) {
       setError(response.data.login.error.message);

@@ -9,7 +9,8 @@ import {
   Heading,
   Input,
 } from "@chakra-ui/react";
-import { useRegisterMutation } from "../generated/graphql";
+import { MeDocument, MeQuery, useRegisterMutation } from "../generated/graphql";
+import { setAccessToken } from "../accessToken";
 
 const Register: React.FC = () => {
   const [register] = useRegisterMutation();
@@ -29,7 +30,24 @@ const Register: React.FC = () => {
           password,
         },
       },
+      update: (store, { data }) => {
+        if (!data) {
+          return null;
+        }
+
+        store.writeQuery<MeQuery>({
+          query: MeDocument,
+          data: {
+            __typename: "Query",
+            me: data.register.user,
+          },
+        });
+      },
     });
+
+    if (response && response.data) {
+      setAccessToken(response.data.register.accessToken || "");
+    }
 
     if (response.data?.register.error) {
       setError(response.data.register.error.message);
