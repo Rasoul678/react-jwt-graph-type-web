@@ -1,11 +1,9 @@
-import { Box, Button, Flex, Stack } from "@chakra-ui/react";
+import { Button, Flex, Stack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { setAccessToken } from "../accessToken";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 
-interface NavBarProps {}
-
-const NavBar: React.FC<NavBarProps> = () => {
+const NavBar: React.FC = () => {
   const { data, loading } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
 
@@ -22,9 +20,9 @@ const NavBar: React.FC<NavBarProps> = () => {
   } else if (data && data.me) {
     body = (
       <>
-        <Box textColor="orange.300" fontWeight="bold">
-          {data.me.email}
-        </Box>
+        <Button textColor="orange.300" variant="link" colorScheme="teal">
+          <Link to="profile">{data.me.email}</Link>
+        </Button>
         <Button variant="link" colorScheme="teal" onClick={handleLogout}>
           Logout
         </Button>

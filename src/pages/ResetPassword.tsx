@@ -11,14 +11,14 @@ import {
 import { decode } from "js-base64";
 import { useResetPasswordMutation } from "../generated/graphql";
 
-const ForgotPassword: React.FC = () => {
+const ResetPassword: React.FC = () => {
   const [resetPassword] = useResetPasswordMutation();
   const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const handleResetPassword = async () => {
-    setIsLoading(true);
+    setIsSending(true);
     const response = await resetPassword({
       variables: {
         input: {
@@ -31,7 +31,7 @@ const ForgotPassword: React.FC = () => {
     if (response.data) {
       setError(response.data?.resetPassword.message);
     }
-    setIsLoading(false);
+    setIsSending(false);
   };
 
   const handleChangePasswordInput = (
@@ -55,7 +55,7 @@ const ForgotPassword: React.FC = () => {
         {!!error && <FormHelperText color="coral">{error}</FormHelperText>}
       </FormControl>
       <Button
-        isLoading={isLoading}
+        isLoading={isSending}
         colorScheme="teal"
         mt={5}
         onClick={handleResetPassword}
@@ -66,4 +66,4 @@ const ForgotPassword: React.FC = () => {
   );
 };
 
-export default ForgotPassword;
+export default ResetPassword;

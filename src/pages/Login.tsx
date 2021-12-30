@@ -18,12 +18,12 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLogging, setIsLogging] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleRegisterUser = async () => {
-    setIsLoading(true);
+  const handleLoginUser = async () => {
+    setIsLogging(true);
     const response = await login({
       variables: {
         input: {
@@ -52,11 +52,11 @@ const Login: React.FC = () => {
 
     if (response.data?.login.error) {
       setError(response.data.login.error.message);
-      setIsLoading(false);
+      setIsLogging(false);
       return;
     }
 
-    navigate("/");
+    navigate(-1);
   };
 
   return (
@@ -83,9 +83,9 @@ const Login: React.FC = () => {
       </FormControl>
       <Flex justifyContent="space-between" mt={5}>
         <Button
-          isLoading={isLoading}
+          isLoading={isLogging}
           colorScheme="teal"
-          onClick={handleRegisterUser}
+          onClick={handleLoginUser}
         >
           Login
         </Button>

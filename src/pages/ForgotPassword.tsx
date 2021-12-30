@@ -14,10 +14,10 @@ const ForgotPassword: React.FC = () => {
   const [senResetPassEmail] = useSendResetPasswordEmailMutation();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const handleSendResetEmail = async () => {
-    setIsLoading(true);
+    setIsSending(true);
     const response = await senResetPassEmail({
       variables: {
         email,
@@ -27,7 +27,7 @@ const ForgotPassword: React.FC = () => {
     if (response.data) {
       setError(response.data?.sendResetPasswordEmail.message);
     }
-    setIsLoading(false);
+    setIsSending(false);
   };
 
   const handleChangeEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +46,7 @@ const ForgotPassword: React.FC = () => {
         {!!error && <FormHelperText color="coral">{error}</FormHelperText>}
       </FormControl>
       <Button
-        isLoading={isLoading}
+        isLoading={isSending}
         colorScheme="teal"
         mt={5}
         onClick={handleSendResetEmail}

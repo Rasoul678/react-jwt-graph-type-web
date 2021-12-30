@@ -17,12 +17,12 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
 
   const navigate = useNavigate();
 
   const handleRegisterUser = async () => {
-    setIsLoading(true);
+    setIsRegistering(true);
     const response = await register({
       variables: {
         input: {
@@ -51,7 +51,7 @@ const Register: React.FC = () => {
 
     if (response.data?.register.error) {
       setError(response.data.register.error.message);
-      setIsLoading(false);
+      setIsRegistering(false);
       return;
     }
 
@@ -81,7 +81,7 @@ const Register: React.FC = () => {
         {!!error && <FormHelperText color="coral">{error}</FormHelperText>}
       </FormControl>
       <Button
-        isLoading={isLoading}
+        isLoading={isRegistering}
         colorScheme="teal"
         variant="ghost"
         mt={5}
